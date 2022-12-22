@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar.jsx";
 import Form from "./pages/Form.js";
 import './sass/index.scss';
 import Detail from "./pages/Detail.js";
+import Footer from "./components/Footer.jsx";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
     <Route path='/form' element={<Form/>}/>
     <Route path='/detail/:codigo' element={<Detail/>}/>
   </Routes>
+  <Footer/>
   </>
   );
 }

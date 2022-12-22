@@ -1,28 +1,30 @@
 import React, { useState } from "react";
+import { apiUrl } from "../redux/actions";
 
 const Form = () => {
-  const [title, setTitle] = useState();
-  const [description, setDescription] = useState();
-  const [released, setReleased] = useState('Jesus');
+  const [name, setName] = useState(undefined);
+  const [description, setDescription] = useState(undefined);
+  const [released, setReleased] = useState(undefined);
   const [image, setImage] = useState(undefined);
-  const [rating, setRating] = useState();
-  const [page, setPage] = useState(undefined);
-  const [developer, setDeveloper] = useState();
-  const [genre, setGenre] = useState('Action');
+  const [rating, setRating] = useState(3);
+  const [website, setWebsite] = useState(undefined);
+  const [developers, setDevelopers] = useState(undefined);
+  const [genres, setGenres] = useState('Action');
 
-  const titleHtml = document.querySelector('#title');
+  const nameHtml = document.querySelector('#name');
   const descriptionHtml = document.querySelector('#description');
   const releasedHtml = document.querySelector('#released');
   const imageHtml = document.querySelector('#image');
   const ratingHtml = document.querySelector('#rating');
   const websiteHtml = document.querySelector('#website');
-  const developerHtml = document.querySelector('#developer');
+  const developersHtml = document.querySelector('#developers');
   const genresHtml = document.querySelector('#genres');
+  const alertHtml = document.querySelector('#alert');
 
 
 
-  const handleChangeTitle = (e) => {
-    setTitle(e.target.value);
+  const handleChangeName = (e) => {
+    setName(e.target.value);
   };
   const handleChangeDescription = (e) => {
     setDescription(e.target.value);
@@ -33,14 +35,14 @@ const Form = () => {
   const handleChangeRating = (e) => {
     setRating(e.target.value);
   };
-  const handleChangePage = (e) => {
-    setPage(e.target.value);
+  const handleChangeWebsite = (e) => {
+    setWebsite(e.target.value);
   };
-  const handleChangeDeveloper = (e) => {
-    setDeveloper(e.target.value);
+  const handleChangeDevelopers = (e) => {
+    setDevelopers(e.target.value);
   };
-  const handleChangeGenre = (e) => {
-    setGenre(e.target.value);
+  const handleChangeGenres = (e) => {
+    setGenres(e.target.value);
   };
   const handleChangeReleased = (e) => {
     setReleased(e.target.value);
@@ -51,32 +53,49 @@ const Form = () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        name: title,
+        name,
         description,
         background_image:image,
         rating,
-        website:page,
-        developers:developer,
-        genres:genre,
+        website,
+        developers,
+        genres,
         released,
       }),
     };
     const res = await fetch(
-      "https://api-videogames-jes.herokuapp.com/db/games",
+      `${apiUrl}/db/games`,
       requestOptions
     )
       .then((data) => data.json())
-      .then((info) => info)
-      .catch(error=>{console.log(error)})
-    console.log(res);
-    // titleHtml.value='';
-    // descriptionHtml.value='';
-    // releasedHtml.value='';
-    // imageHtml.value='';
-    // ratingHtml.value='';
-    // websiteHtml.value='';
-    // developerHtml.value='';
-    // genresHtml.value='';
+      .then((info) => (info))
+      .catch(error=>{console.log(error)});  // there's no needed to add catch here.
+    
+      console.log(res);
+    const boolean = res.hasOwnProperty('message');
+
+    if(!boolean){
+    nameHtml.value='';
+    setName(undefined);
+    descriptionHtml.value='';
+    setDescription(undefined);
+    releasedHtml.value='';
+    setReleased(undefined);
+    imageHtml.value='';
+    setImage(undefined)
+    ratingHtml.value='';
+    setRating(3);
+    websiteHtml.value='';
+    setWebsite(undefined);
+    developersHtml.value='';
+    setDevelopers(undefined)
+    genresHtml.value='Action';
+    setGenres('Action');
+    alertHtml.innerHTML='All fields marked with (*) are mandatory'
+    }else{
+      alertHtml.innerHTML='Faltan completar datos'
+    }
+
   };
 
   return (
@@ -84,35 +103,49 @@ const Form = () => {
       <div className="form">
         <div className="form__title">Formulario</div>
         <div className="form__inputs">
-          <div className="form__inputs__title">Title</div>
+          <div className="form__inputs__title">
+            <div className="form__inputs__title__text">Title</div>
+            <div className="form__inputs__title__asterisco">*</div>
+          </div>
           <input
             className="form__inputs__input"
             type="text"
-
-            id='title'
-            onChange={handleChangeTitle}
+            id='name'
+            onChange={handleChangeName}
           />
-          <div className="form__inputs__title">Description</div>
+          <div className="form__inputs__title">
+            <div className="form__inputs__title__text">Description</div>
+            <div className="form__inputs__title__asterisco">*</div>
+          </div>
           <textarea
             className="form__inputs__input"
             type="text"
             id='description'
             onChange={handleChangeDescription}
           />
-          <div className="form__inputs__title">Released</div>
+          <div className="form__inputs__title">
+            <div className="form__inputs__title__text">Released</div>
+            <div className="form__inputs__title__asterisco">*</div>
+          </div>
           <input
             className="form__inputs__input"
             type="date"
+            id="released"
             onChange={handleChangeReleased}
           />
-          <div className="form__inputs__title">Image</div>
+          <div className="form__inputs__title">
+            <div className="form__inputs__title__text">Image</div>
+          </div>
           <input
             className="form__inputs__input"
             type="text"
             id='image'
             onChange={handleChangeImage}
           />
-          <div className="form__inputs__title">Rating</div>
+          <div className="form__inputs__title">
+            <div className="form__inputs__title__text">Rating</div>
+            <div className="form__inputs__title__asterisco">*</div>
+          </div>
           <input
             className="form__inputs__input"
             type="number"
@@ -121,26 +154,35 @@ const Form = () => {
             id='rating'
             onChange={handleChangeRating}
           />
-          <div className="form__inputs__title">Official Page</div>
+          <div className="form__inputs__title">
+            <div className="form__inputs__title__text">Official Page</div>
+            <div className="form__inputs__title__asterisco">*</div>
+          </div>
           <input
             className="form__inputs__input"
             type="text"
             id='website'
-            onChange={handleChangePage}
+            onChange={handleChangeWebsite}
           />
-          <div className="form__inputs__title">Developer</div>
+          <div className="form__inputs__title">
+            <div className="form__inputs__title__text">Company</div>
+            <div className="form__inputs__title__asterisco">*</div>
+          </div>
           <input
             className="form__inputs__input"
             type="text"
-            id='developer'
-            onChange={handleChangeDeveloper}
+            id='developers'
+            onChange={handleChangeDevelopers}
           />
-          <div className="form__inputs__title">Genre</div>
+          <div className="form__inputs__title">
+            <div className="form__inputs__title__text">Genre</div>
+            <div className="form__inputs__title__asterisco">*</div>
+          </div>
           <select
             className="form__inputs__input"
             type="text"
-            id='genre'
-            onChange={handleChangeGenre}
+            id='genres'
+            onChange={handleChangeGenres}
           >
             <option value="Action">Action</option>
             <option value="Adventure">Adventure</option>
@@ -151,7 +193,11 @@ const Form = () => {
             <option value="Shooter">Shooter</option>
             <option value="RPG">RPG</option>
           </select>
+          <div className="form__inputs__alert" id="alert">
+          {'All fields marked with (*) are mandatory'}
+          </div>
         </div>
+       
         <div className="form__container-button">
           <input
             className="form__container-button__button"

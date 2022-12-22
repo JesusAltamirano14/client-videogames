@@ -161,8 +161,9 @@ const dispatch = useDispatch();
         </div>
       </div>
       <LoadingGames />
+      <a className="home__fixed" href="#navbar"><div className="home__fixed__icon"></div></a>
     </div>
   );
 };
 
-export default Home;
+export default Home

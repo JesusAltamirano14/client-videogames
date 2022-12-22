@@ -1,3 +1,5 @@
+export const apiUrl = 'https://server-videogames-production.up.railway.app'
+
 
 export const TYPES = {
     GET_ALL_VIDEO_GAMES:'GET_ALL_VIDEO_GAMES',
@@ -40,7 +42,7 @@ export const getOneDetailDataGame = (payload) => ({
 
 export function fetchGetAllGames () {
     return function (dispatch) {
-        fetch(`https://api-videogames-jes.herokuapp.com/api/games`)
+        fetch(`${apiUrl}/api/games`)
         .then(data => data.json())
         .then(info => {dispatch(getAllVideoGames(info))})
         .catch(error=>{console.log(error)});
@@ -49,7 +51,7 @@ export function fetchGetAllGames () {
 
 export function fetchSearchGames(name){
     return function(dispatch){
-        fetch(`https://api-videogames-jes.herokuapp.com/api/games/${name}`)
+        fetch(`${apiUrl}/api/games/${name}`)
         .then(data => data.json())
         .then(info => {dispatch(getSearchGames(info))})
         .catch(e=>{console.log(e)});
@@ -58,7 +60,7 @@ export function fetchSearchGames(name){
 
 export const fetchDetailOneGame = (id) => (
     function (dispatch){
-        fetch(`https://api-videogames-jes.herokuapp.com/api/detail/${id}`)
+        fetch(`${apiUrl}/api/detail/${id}`)
         .then(data=>data.json())
         .then(info=>{dispatch(detailOneGame(info))})
         .catch(e=>{console.log(e)});
@@ -67,7 +69,7 @@ export const fetchDetailOneGame = (id) => (
 
 export function fetchDataGames (){
     return function(dispatch){
-        fetch(`https://api-videogames-jes.herokuapp.com/db/games`)
+        fetch(`${apiUrl}/db/games`)
         .then(data=>data.json())
         .then(info => {dispatch(getDataGames(info))})
         .catch(e=>{console.log(e)});
@@ -76,7 +78,7 @@ export function fetchDataGames (){
 
 export function fetchDetailOneDataGame(id){
     return function (dispatch){
-        fetch(`https://api-videogames-jes.herokuapp.com/db/detail/${id}`)
+        fetch(`${apiUrl}/db/detail/${id}`)
         .then(data=>data.json())
         .then(info=>{dispatch(getOneDetailDataGame(info))})
         .catch(e=>{console.log(e)});

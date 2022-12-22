@@ -23,8 +23,17 @@ const Pagination = ({ setCurrentPage, currentPage ,numberPages }) => {
     }
   }
 
+  const handleStart = () =>{
+    setCurrentPage(1);
+  }
+  
+  const handleEnd = ()=>{
+    setCurrentPage(numberPages);
+  }
+
   return (
     <div className="pagination">
+      <button className="pagination__element" onClick={()=>{handleStart()}}>{'<<'}</button>
       <button className="pagination__element" onClick={()=>{handleLess()}}>{'<'}</button>
       <div className="pagination__numbers">
         {pages?.map((data) => (
@@ -38,6 +47,8 @@ const Pagination = ({ setCurrentPage, currentPage ,numberPages }) => {
         ))}
       </div>
       <button className="pagination__element" onClick={()=>{handlePlus()}}>{'>'}</button>
+      <button className="pagination__element" onClick={()=>{handleEnd()}}>{'>>'}</button>
+
     </div>
   );
 };
